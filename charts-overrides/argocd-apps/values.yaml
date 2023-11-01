@@ -1,0 +1,29 @@
+# -- Deploy Argo CD Applications within this helm release
+# @default -- `[]` (See [values.yaml])
+## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/
+
+applications:
+- name: nginx-controller
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  project: default
+  sources:
+    - repoURL: https://kubernetes.github.io/ingress-nginx
+      targetRevision: 4.8.3
+      chart: ingress-nginx
+      helm:
+        valueFiles:
+        - $values/charts-overrides/nginx-controller/values.yaml
+    - repoURL: https://github.com/conquer-project/helm-charts.git
+      targetRevision: feat/charts-overrides
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-tools
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
