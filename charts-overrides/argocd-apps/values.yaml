@@ -27,3 +27,43 @@ applications:
     syncOptions:
       - ApplyOutOfSyncOnly=true
       - CreateNamespace=true
+
+- name: metrics-server
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  project: default
+  source:
+    - repoURL: https://kubernetes-sigs.github.io/metrics-server/
+      targetRevision: 3.11.0
+      chart: metrics-server
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-tools
+  syncPolicy:
+    automated:
+      prune: true       # will delete resources when Argo CD detects the resource is no longer defined in Git
+      selfHeal: false   # TODO: Change to True later. Git repo will always be the source of truth (any manual change on k8s will be overwritten)
+      allowEmpty: false # do not allow argo applications have empty resource
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
+
+- name: sealed-secrets
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  project: default
+  source:
+    repoURL: https://bitnami-labs.github.io/sealed-secrets
+    chart: sealed-secrets
+    targetRevision: 2.13.1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-tools
+  syncPolicy:
+    automated:
+      prune: true       # will delete resources when Argo CD detects the resource is no longer defined in Git
+      selfHeal: false   # TODO: Change to True later. Git repo will always be the source of truth (any manual change on k8s will be overwritten)
+      allowEmpty: false # do not allow argo applications have empty resource
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
