@@ -15,7 +15,7 @@ applications:
         valueFiles:
         - $values/charts-overrides/nginx-controller/values.yaml
     - repoURL: https://github.com/conquer-project/helm-charts.git
-      targetRevision: feat/charts-overrides
+      targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc
@@ -33,9 +33,9 @@ applications:
   - resources-finalizer.argocd.argoproj.io
   project: default
   source:
-    - repoURL: https://kubernetes-sigs.github.io/metrics-server/
-      targetRevision: 3.11.0
-      chart: metrics-server
+    repoURL: https://kubernetes-sigs.github.io/metrics-server/
+    targetRevision: 3.11.0
+    chart: metrics-server
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-tools

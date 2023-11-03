@@ -9,7 +9,7 @@ configs:
     server.insecure: true # Run server without TLS, this will allow TLS termination at the nginx ingress controller https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-2-ssl-termination-at-ingress-controller
     # Value for base href in index.html. Since Argo CD is running behind reverse proxy under subpath different from /
     # https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-    server.basehref: "/"
+    server.basehref: "/argocd"
     # server.rootpath: /argocd Alternative to using the rewrite-target in the ingress-controller https://github.com/argoproj/argo-helm/blob/804af65b38dd1c4a27a3df5fb478d18c126a6e24/charts/argo-cd/values.yaml#L246
 server:
   ingress:
